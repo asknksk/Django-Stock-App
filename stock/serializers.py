@@ -77,11 +77,11 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('price_total',)  # sadece readonly için post işleminde geçersiz
         
-        def validate(self, data): #gelen out işlemi eksiye düşüyorsa  yapma 
-            if data.get('transaction') == 0: #data aslında burada yukarıdaki fieldsların hepsi
-                product = Product.objects.get(id=data.get('product_id'))
-                if data.get('quantity') > product.stock:
-                    raise serializers.ValidationErr(
-                        f'Dont have enough stock. Current stock is {product.stock}'
-                    )
-            return data
+    def validate(self, data): #gelen out işlemi eksiye düşüyorsa  yapma 
+        if data.get('transaction') == 0: #data aslında burada yukarıdaki fieldsların hepsi
+            product = Product.objects.get(id=data.get('product_id'))
+            if data.get('quantity') > product.stock:
+                raise serializers.ValidationErr(
+                    f'Dont have enough stock. Current stock is {product.stock}'
+                )
+        return data
