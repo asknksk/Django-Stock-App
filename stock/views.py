@@ -9,8 +9,10 @@ from .models import(
 from .serializers import(
     BrandSerializer,
     CategorySerializer,
+    FirmSerializer,
     ProductSerializer
 )
+from django_filters.rest_framework import DjangoFilterBackend
 
 class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -22,8 +24,17 @@ class BrandView(viewsets.ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
     filter_backends = [filters.SearchFilter] 
-    search_fields = ['name'] # hangi field a göre search edecek 
-
+    search_fields = ['name'] 
+    
 class ProductView(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter] 
+    filterset_fields = ['category', 'brand']
+    search_fields = ['name'] 
+
+class FirmView(viewsets.ModelViewSet):
+    queryset = Firm.objects.all()
+    serializer_class = FirmSerializer
+    filter_backends = [filters.SearchFilter] 
+    search_fields = ['name'] 

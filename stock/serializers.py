@@ -42,3 +42,13 @@ class ProductSerializer(serializers.ModelSerializer):
         )
 
         read_only_fields = ('stock',)  # sadece readonly için post işleminde geçersiz
+
+class FirmSerializer(serializers.ModelSerializer):  
+    class Meta:
+        model = Firm
+        fields = (
+            'id',
+            'name',
+            'phone',
+            'address'
+        )
