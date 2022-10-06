@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from .models import(
     Category,
     Brand,
@@ -7,9 +7,18 @@ from .models import(
     Transaction
 )
 from .serializers import(
+    BrandSerializer,
     CategorySerializer
 )
 
 class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    filter_backends = [filters.SearchFilter] 
+    search_fields = ['name'] # hangi field a göre search edecek 
+
+class BrandView(viewsets.ModelViewSet):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+    filter_backends = [filters.SearchFilter] 
+    search_fields = ['name'] # hangi field a göre search edecek 
