@@ -8,7 +8,8 @@ from .models import(
 )
 from .serializers import(
     BrandSerializer,
-    CategorySerializer
+    CategorySerializer,
+    ProductSerializer
 )
 
 class CategoryView(viewsets.ModelViewSet):
@@ -22,3 +23,7 @@ class BrandView(viewsets.ModelViewSet):
     serializer_class = BrandSerializer
     filter_backends = [filters.SearchFilter] 
     search_fields = ['name'] # hangi field a göre search edecek 
+
+class ProductView(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
