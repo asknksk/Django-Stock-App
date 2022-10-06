@@ -25,7 +25,7 @@ class BrandView(viewsets.ModelViewSet):
     serializer_class = BrandSerializer
     filter_backends = [filters.SearchFilter] 
     search_fields = ['name'] 
-    
+
 class ProductView(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -38,3 +38,7 @@ class FirmView(viewsets.ModelViewSet):
     serializer_class = FirmSerializer
     filter_backends = [filters.SearchFilter] 
     search_fields = ['name'] 
+
+class TransactionView(viewsets.ModelViewSet):
+    queryset = Transaction.objects.all()
+    serializer_class = ""

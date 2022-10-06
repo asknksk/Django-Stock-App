@@ -1,3 +1,4 @@
+from xml.dom import ValidationErr
 from rest_framework import serializers
 from .models import(
     Category,
@@ -52,3 +53,35 @@ class FirmSerializer(serializers.ModelSerializer):
             'phone',
             'address'
         )
+
+class TransactionSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    firm = serializers.StringRelatedField() #foreign key ile bağlı olanları string karşılığını almak için
+    firm_id = serializers.IntegerField()
+    product = serializers.StringRelatedField()
+    product_id = serializers.IntegerField()
+
+    class Meta:
+        model = Transaction
+        fields = (
+            'id',
+            'user',
+            'firm',
+            'firm_id',
+            'transaction',
+            'product',
+            'product_id',
+            'price',
+            'price_total'
+        )
+
+        read_only_fields = ('price_total',)  # sadece readonly için post işleminde geçersiz
+        
+        def validate(self, data): #gelen out işlemi eksiye düşüyorsa  yapma 
+            if data.get('transaction') == 0: #data aslında burada yukarıdaki fieldsların hepsi
+                product = Product.objects.get(id=data.get('product_id'))
+                if data.get('quantity') > product.stock:
+                    raise serializers.ValidationErr(
+                        f'Dont have enough stock. Current stock is {product.stock}'
+                    )
+            return data
