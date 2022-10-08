@@ -14,11 +14,14 @@ from .serializers import(
     ProductSerializer,
     TransactionSerializer
 )
+from rest_framework.permissions import DjangoModelPermissions   #get methodları herkese açık getleri sınırlandırmak için overwrite edilebilir.
+from .permissions import CustomModelPermissions
 from django_filters.rest_framework import DjangoFilterBackend
 
 class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [CustomModelPermissions]
     filter_backends = [filters.SearchFilter] 
     search_fields = ['name'] # hangi field a göre search edecek 
     filterset_fields = ['name']
@@ -33,12 +36,14 @@ class CategoryView(viewsets.ModelViewSet):
 class BrandView(viewsets.ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+    permission_classes = [CustomModelPermissions]
     filter_backends = [filters.SearchFilter] 
     search_fields = ['name'] 
 
 class ProductView(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [CustomModelPermissions]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter] 
     filterset_fields = ['category', 'brand']
     search_fields = ['name'] 
@@ -46,12 +51,14 @@ class ProductView(viewsets.ModelViewSet):
 class FirmView(viewsets.ModelViewSet):
     queryset = Firm.objects.all()
     serializer_class = FirmSerializer
+    permission_classes = [CustomModelPermissions]
     filter_backends = [filters.SearchFilter] 
     search_fields = ['name'] 
 
 class TransactionView(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
+    permission_classes = [CustomModelPermissions]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter] 
     filterset_fields = ['firm', 'transaction', 'product']
     search_fields = ['firm'] 
