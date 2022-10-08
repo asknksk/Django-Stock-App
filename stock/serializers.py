@@ -1,4 +1,3 @@
-from xml.dom import ValidationErr
 from rest_framework import serializers
 from .models import(
     Category,
@@ -43,6 +42,16 @@ class ProductSerializer(serializers.ModelSerializer):
         )
 
         read_only_fields = ('stock',)  # sadece readonly için post işleminde geçersiz
+
+class CategoryProductsSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True)
+
+    class Meta:
+        model = Category
+        fields = (
+            "name",
+            "products"
+        )
 
 class FirmSerializer(serializers.ModelSerializer):  
     class Meta:

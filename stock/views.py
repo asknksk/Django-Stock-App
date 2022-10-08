@@ -8,6 +8,7 @@ from .models import(
 )
 from .serializers import(
     BrandSerializer,
+    CategoryProductsSerializer,
     CategorySerializer,
     FirmSerializer,
     ProductSerializer,
@@ -20,6 +21,14 @@ class CategoryView(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     filter_backends = [filters.SearchFilter] 
     search_fields = ['name'] # hangi field a göre search edecek 
+    filterset_fields = ['name']
+
+    def get_serializer_class(self):
+        if self.request.query_params.get('name'):  # name e göre aratmak için sorgulama. url e ?name= gibi geliyor.
+            # query_params ?name..&id= gibi buralardaki query_paramslar nested olarak yazabiliriz.
+            return CategoryProductsSerializer        #sorgu varsa bunu yoksa alttakini
+        else:
+            return super().get_serializer_class()  # böylece nested arama yaptık category de
 
 class BrandView(viewsets.ModelViewSet):
     queryset = Brand.objects.all()
